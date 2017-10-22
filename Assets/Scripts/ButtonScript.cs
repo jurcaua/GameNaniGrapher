@@ -7,6 +7,8 @@ public class ButtonScript : MonoBehaviour {
 
 	public GameObject bottom;
 	public string text;
+
+
 	// Use this for initialization
 	void Start () {
 		bottom = GameObject.Find ("ScrollContent");
@@ -18,7 +20,9 @@ public class ButtonScript : MonoBehaviour {
 	}
 
 	public void Refresh() {
+
+
 		bottom.GetComponent<BottomBar> ().Refresh (text);
-        GameObject.Find("Graph").GetComponent<Grapher>().CreateObjectPoints(text);
+		GameObject.Find("Graph").GetComponent<Grapher>().CreateObjectPoints(text);
 	}
 }

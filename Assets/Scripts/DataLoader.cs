@@ -14,6 +14,9 @@ public class DataLoader : MonoBehaviour {
 	public GameObject sr;
 	public GameObject sc;
 
+	public GameObject legend;
+	public GameObject graph;
+
 	public GameObject buttonprefab;
 	public string game;
 
@@ -86,6 +89,9 @@ public class DataLoader : MonoBehaviour {
 
 		dp.gameObject.SetActive (false);
 		gamebutton.gameObject.SetActive (false);
+
+		legend.SetActive (true);
+		graph.SetActive (true);
 
 		//loads the next page
 	}

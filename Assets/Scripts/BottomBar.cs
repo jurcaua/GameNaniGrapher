@@ -11,18 +11,21 @@ public class BottomBar : MonoBehaviour {
 	public int childcount;
 	public GameObject ldr;
 	public GameObject other;
+
 	// Use this for initialization
 	void Start () {
 		
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		
 	}
 
 	public void Refresh(string s) {
-		
+
+
+
 		for (int i = transform.childCount - 1; i >= 0; i--) {
 			Destroy (transform.GetChild(i).gameObject);
 		}
@@ -44,6 +47,7 @@ public class BottomBar : MonoBehaviour {
 				a.GetComponent<BHscript> ().other = other;
 			}
 		}
+			
 	}
 		
 }
