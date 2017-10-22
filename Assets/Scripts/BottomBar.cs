@@ -9,6 +9,8 @@ public class BottomBar : MonoBehaviour {
 	public GameObject button;
 	public DataLoader dl;
 	public int childcount;
+	public GameObject ldr;
+	public GameObject other;
 	// Use this for initialization
 	void Start () {
 		
@@ -36,6 +38,10 @@ public class BottomBar : MonoBehaviour {
 				GameObject a = Instantiate (button, transform);
 				a.GetComponentInChildren<Text> ().text = ses.sessionID;
 				a.transform.GetComponent<RectTransform>().sizeDelta = new Vector2 (80,  1235/k);
+				a.GetComponent<BHscript> ().ld = ses.lookData.dictionary [s];
+				a.GetComponent<BHscript> ().ldr = ldr;
+				a.GetComponent<BHscript> ().bb = transform.parent.gameObject;
+				a.GetComponent<BHscript> ().other = other;
 			}
 		}
 	}

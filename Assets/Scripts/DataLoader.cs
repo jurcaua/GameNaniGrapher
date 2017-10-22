@@ -12,6 +12,8 @@ public class DataLoader : MonoBehaviour {
 	public Dropdown dp;
 	public Button gamebutton;
 	public GameObject sr;
+	public GameObject sc;
+
 	public GameObject buttonprefab;
 	public string game;
 
@@ -61,7 +63,10 @@ public class DataLoader : MonoBehaviour {
 
 	public void Clear() {
 		game = games [dp.value];
+		sc.gameObject.SetActive (true);
 		sr.gameObject.SetActive (true);
+
+
 		//add data to it
 
 		Transform content = sr.transform.GetChild (0);
