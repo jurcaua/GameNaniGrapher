@@ -8,43 +8,20 @@ public class Grapher : MonoBehaviour {
     public int resolution = 10;
     public Text xAxis;
     public Text yAxis;
+    public Text yMin;
+    public Text yMax;
+    public float wideMult;
+    public float xShift;
 
     private int currentResolution;
     private List<Vector3> points = new List<Vector3>();
-    private LineRenderer r;
+    private LineRenderer[] r;
 
     void Start() {
 
-        r = GetComponent<LineRenderer>();
+        r = GetComponentsInChildren<LineRenderer>();
 
         //CreatePoints();
-
-        List<string> objects = new List<string>(DATA.sessions[0].lookData.dictionary.Keys);
-
-        List<LookData> data = new List<LookData>();
-        Debug.Log(objects.Count);
-        if (objects.Count > 0) {
-            string tempObj = objects[0];
-            Debug.Log(tempObj);
-
-            foreach (Session s in DATA.sessions) {
-                if (s.lookData.dictionary.ContainsKey(tempObj)) {
-                    data.Add(s.lookData.dictionary[tempObj]);
-                }
-            }
-            Debug.Log(data.Count);
-
-            float[] x = new float[data.Count];
-            float[] y = new float[data.Count];
-
-            for (int i = 0; i < data.Count; i++) {
-                y[i] = data[i].averageTime;
-                x[i] = i;
-            }
-
-            Graph("Session", x, "Average Time", y);
-        }
-
 
 
         //Graph("x", lookSessions.Count)
@@ -68,22 +45,80 @@ public class Grapher : MonoBehaviour {
         p.SetParticles(points, points.Length);
         */
     }
-    /*
-    private void CreatePoints() {
-        if (resolution < 10 || resolution > 100) {
-            Debug.LogWarning("Grapher resolution out of bounds, resetting to minimum.", this);
-            resolution = 10;
+    
+    public void CreatePoints() {
+
+        for (int rendIndex = 0; rendIndex < r.Length; rendIndex++) {
+
+            List<string> objects = new List<string>(DATA.sessions[0].lookData.dictionary.Keys);
+
+            List<LookData> data = new List<LookData>();
+            Debug.Log(objects.Count);
+            if (objects.Count > 0) {
+                string tempObj = objects[0];
+                Debug.Log(tempObj);
+
+                foreach (Session s in DATA.sessions) {
+                    if (s.lookData.dictionary.ContainsKey(tempObj)) {
+                        data.Add(s.lookData.dictionary[tempObj]);
+                    }
+                }
+                Debug.Log(data.Count);
+
+                float[] x = new float[data.Count];
+                float[] y = new float[data.Count];
+
+                for (int i = 0; i < data.Count; i++) {
+                    x[i] = i;
+
+                    if (rendIndex == 0) {
+                        y[i] = data[i].averageTime;
+                        Debug.Log(i + " -- " + r[rendIndex].name);
+                    } else if (rendIndex == 1) {
+                        y[i] = data[i].TotalTime;
+                        Debug.Log(i + " -- " + r[rendIndex].name);
+                    } else if (rendIndex == 2) {
+                        y[i] = data[i].lookedAt;
+                        Debug.Log(i + " -- " + r[rendIndex].name);
+                    }
+                }
+
+                Graph(r[rendIndex], "Session", x, "Value", y, rendIndex);
+            }
         }
-        currentResolution = resolution;
-        points = new ParticleSystem.Particle[resolution];
-        float increment = 1f / (resolution - 1);
-        for (int i = 0; i < resolution; i++) {
-            float x = i * increment;
-            points[i].position = new Vector3(x, 0f, 0f);
-            points[i].startColor = new Color(x, 0f, 0f);
-            points[i].startSize = 0.1f;
+    }
+
+    public void CreateObjectPoints(string objectName) {
+        for (int rendIndex = 0; rendIndex < r.Length; rendIndex++) {
+
+            List<LookData> data = new List<LookData>();
+            
+
+            foreach (Session s in DATA.sessions) {
+                if (s.lookData.dictionary.ContainsKey(objectName)) {
+                    data.Add(s.lookData.dictionary[objectName]);
+                }
+            }
+
+            float[] x = new float[data.Count];
+            float[] y = new float[data.Count];
+
+            Debug.Log(rendIndex + " -- " + r[rendIndex].name);
+            for (int i = 0; i < data.Count; i++) {
+                x[i] = i;
+
+                if (rendIndex == 0) {
+                    y[i] = data[i].averageTime;
+                } else if (rendIndex == 1) {
+                    y[i] = data[i].TotalTime;
+                } else if (rendIndex == 2) {
+                    y[i] = data[i].lookedAt;
+                }
+            }
+
+            Graph(r[rendIndex], "Session", x, "", y, rendIndex);
         }
-    }*/
+    }
 
     private static float Linear(float x) {
         return x;
@@ -102,7 +137,7 @@ public class Grapher : MonoBehaviour {
         return 0.5f + 0.5f * Mathf.Sin(2 * Mathf.PI * x + Time.timeSinceLevelLoad);
     }
 
-    public void Graph(string xLabel, float[] x, string yLabel, float[] y) {
+    public void Graph(LineRenderer line, string xLabel, float[] x, string yLabel, float[] y, float z) {
 
         if (x.Length != y.Length) {
             Debug.Log("x and y lists should be the same size!");
@@ -119,17 +154,21 @@ public class Grapher : MonoBehaviour {
         for (int i = 0; i < resolution; i++) {
             Vector3 newPoint = new Vector3();
             
-            newPoint.x = Mathf.InverseLerp(minX, maxX, x[i]);
+            newPoint.x = Mathf.InverseLerp(minX, maxX, x[i]) * wideMult - xShift;
             newPoint.y = Mathf.InverseLerp(minY, maxY, y[i]);
-            Debug.Log(newPoint);
+            newPoint.z = z;
+            //Debug.Log(newPoint);
 
             points.Add(newPoint);
         }
-        r.positionCount = points.Count;
-        r.SetPositions(points.ToArray());
+        line.positionCount = points.Count;
+        line.SetPositions(points.ToArray());
 
         xAxis.text = xLabel;
         yAxis.text = yLabel;
+        yMin.text = minY.ToString();
+        yMax.text = maxY.ToString();
+
     }
 
     float Max(float[] list) {

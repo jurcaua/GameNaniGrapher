@@ -19,5 +19,6 @@ public class ButtonScript : MonoBehaviour {
 
 	public void Refresh() {
 		bottom.GetComponent<BottomBar> ().Refresh (text);
+        GameObject.Find("Graph").GetComponent<Grapher>().CreateObjectPoints(text);
 	}
 }
