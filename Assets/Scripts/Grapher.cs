@@ -120,6 +120,36 @@ public class Grapher : MonoBehaviour {
         }
     }
 
+    public void CreateKeyCodePoints(KeyCode keycode) {
+        for (int rendIndex = 0; rendIndex < r.Length; rendIndex++) {
+
+            List<Keydata> data = new List<Keydata>();
+
+
+            foreach (Session s in DATA.sessions) {
+                if (s.keyData.dictionary.ContainsKey(keycode)) {
+                    data.Add(s.keyData.dictionary[keycode]);
+                }
+            }
+
+            float[] x = new float[data.Count];
+            float[] y = new float[data.Count];
+
+            Debug.Log(rendIndex + " -- " + r[rendIndex].name);
+            for (int i = 0; i < data.Count; i++) {
+                x[i] = i;
+
+                if (rendIndex == 0) {
+                    y[i] = data[i].longestHold;
+                } else if (rendIndex == 1) {
+                    y[i] = data[i].count;
+                }
+            }
+
+            Graph(r[rendIndex], "Session", x, "", y, rendIndex);
+        }
+    }
+
     private static float Linear(float x) {
         return x;
     }
