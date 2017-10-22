@@ -7,11 +7,11 @@ public class Grapher : MonoBehaviour {
     
     public int resolution = 10;
     public Text xAxis;
-    public Text yAxis;
     public Text yMin;
     public Text yMax;
     public float wideMult;
     public float xShift;
+    public GameObject[] legendItems;
 
     private int currentResolution;
     private List<Vector3> points = new List<Vector3>();
@@ -89,6 +89,17 @@ public class Grapher : MonoBehaviour {
     }
 
     public void CreateObjectPoints(string objectName) {
+
+        r[0].gameObject.SetActive(true);
+        legendItems[0].SetActive(true);
+        legendItems[0].GetComponentInChildren<Text>().text = "Avg Time (s)";
+        r[1].gameObject.SetActive(true);
+        legendItems[1].SetActive(true);
+        legendItems[1].GetComponentInChildren<Text>().text = "Total Time (s)";
+        r[2].gameObject.SetActive(true);
+        legendItems[2].SetActive(true);
+        legendItems[2].GetComponentInChildren<Text>().text = "Times Looked At (# of times)";
+
         for (int rendIndex = 0; rendIndex < r.Length; rendIndex++) {
 
             List<LookData> data = new List<LookData>();
@@ -121,6 +132,16 @@ public class Grapher : MonoBehaviour {
     }
 
     public void CreateKeyCodePoints(KeyCode keycode) {
+
+        r[0].gameObject.SetActive(true);
+        legendItems[0].SetActive(true);
+        legendItems[0].GetComponentInChildren<Text>().text = "Longest Hold (s)";
+        r[1].gameObject.SetActive(true);
+        legendItems[1].SetActive(true);
+        legendItems[1].GetComponentInChildren<Text>().text = "# of Time Pressed";
+        r[2].gameObject.SetActive(false);
+        legendItems[2].SetActive(false);
+
         for (int rendIndex = 0; rendIndex < r.Length; rendIndex++) {
 
             List<Keydata> data = new List<Keydata>();
@@ -195,7 +216,6 @@ public class Grapher : MonoBehaviour {
         line.SetPositions(points.ToArray());
 
         xAxis.text = xLabel;
-        yAxis.text = yLabel;
         yMin.text = minY.ToString();
         yMax.text = maxY.ToString();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DataLoader : MonoBehaviour {
 
@@ -30,22 +31,32 @@ public class DataLoader : MonoBehaviour {
     }
 
 	void Start () {
-		if (Directory.Exists(folderPath)) {
-            string[] files = Directory.GetFiles(folderPath);
-            foreach (string file in files) {
-                if (Path.GetExtension(file) == ".JSON") {
-                    Debug.Log("Found file:" + file);
-                    OpenFile(file);
+        //if (PlayerPrefs.GetInt("loaded") == 0) {
+          //  PlayerPrefs.SetInt("loaded", 1);
+            if (Directory.Exists(folderPath)) {
+                string[] files = Directory.GetFiles(folderPath);
+                foreach (string file in files) {
+                    if (Path.GetExtension(file) == ".JSON") {
+                        Debug.Log("Found file:" + file);
+                        OpenFile(file);
+                    }
                 }
+            } else {
+                Debug.Log("Directory does not exist!");
+                Directory.CreateDirectory(folderPath);
             }
-        } else {
-            Debug.Log("Directory does not exist!");
-            Directory.CreateDirectory(folderPath);
-        }
-
-		FillDropDown ();
+        //}
+        FillDropDown();
+        
 	}
-	
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.R)) {
+            DATA.sessions.Clear();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
+
 	void OpenFile(string filePath) {
         string json = File.ReadAllText(filePath);
         PrintableData data = JsonUtility.FromJson<PrintableData>(json);

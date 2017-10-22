@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class BottomBar : MonoBehaviour {
 
 	public GameObject button;
-	public DataLoader dl;
+	public GameObject button2;
+    public DataLoader dl;
 	public int childcount;
 	public GameObject ldr;
 	public GameObject other;
@@ -48,30 +49,31 @@ public class BottomBar : MonoBehaviour {
 					a.GetComponent<BHscript> ().other = other;
 				}
 			}
-		} else {
+            GameObject.Find("Graph").GetComponent<Grapher>().CreateObjectPoints(s);
+        } else {
 			Debug.Log ("KOOL");
 			//when key
 			for (int i = transform.childCount - 1; i >= 0; i--) {
 				Destroy (transform.GetChild (i).gameObject);
 			}
 			int k = 0;
-			foreach (Session ses in DATA.sessions) {
-				KeyCode thiskeycode = (KeyCode) System.Enum.Parse(typeof(KeyCode), s);
+            KeyCode thiskeycode = (KeyCode)System.Enum.Parse(typeof(KeyCode), s);
+            foreach (Session ses in DATA.sessions) {
 				Debug.Log (thiskeycode);
 				if (ses.gameName == dl.game && ses.keyData.dictionary.ContainsKey (thiskeycode)) {
 					k++;
 				}
 			}
 			foreach (Session ses in DATA.sessions) {
-				KeyCode thiskeycode = (KeyCode) System.Enum.Parse(typeof(KeyCode), s);
 
 				if (ses.gameName == dl.game && ses.keyData.dictionary.ContainsKey (thiskeycode)) {
-					GameObject a = Instantiate (button, transform);
+					GameObject a = Instantiate (button2, transform);
 					a.GetComponentInChildren<Text> ().text = ses.sessionID;
 					a.transform.GetComponent<RectTransform> ().sizeDelta = new Vector2 (80, 1235 / k);
 				}
 			}
-		}
+            GameObject.Find("Graph").GetComponent<Grapher>().CreateKeyCodePoints(thiskeycode);
+        }
 			
 	}
 		
