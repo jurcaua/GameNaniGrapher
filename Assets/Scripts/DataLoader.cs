@@ -42,11 +42,12 @@ public class DataLoader : MonoBehaviour {
         string json = File.ReadAllText(filePath);
         PrintableData data = JsonUtility.FromJson<PrintableData>(json);
 
-        ProcessData(data);
+        ProcessData(data, filePath);
     }
 
-    void ProcessData(PrintableData data) {
-        DATA.AddSession(data.gameName, data.dateTime, data.keys, data.lookDatas, data.keyPressData.keycodes, data.keyPressData.keydatas);
+    void ProcessData(PrintableData data, string filePath) {
+        Debug.Log(Path.GetFileNameWithoutExtension(filePath).Substring("session".Length));
+        DATA.AddSession(data.gameName, data.dateTime, Path.GetFileNameWithoutExtension(filePath).Substring("session".Length), data.keys, data.lookDatas, data.keyPressData.keycodes, data.keyPressData.keydatas);
 
 		if (!games.Contains (data.gameName)) {
 			games.Add (data.gameName);

@@ -1,49 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Grapher : MonoBehaviour {
-
-    [Range(10, 100)]
+    
     public int resolution = 10;
-
-    public FunctionOption function;
-    public enum FunctionOption {
-        Linear,
-        Exponential,
-        Parabola,
-        Sine
-    }
-
-    private delegate float FunctionDelegate(float x);
-    private static FunctionDelegate[] functionDelegates = {
-        Linear,
-        Exponential,
-        Parabola,
-        Sine
-    };
+    public Text xAxis;
+    public Text yAxis;
 
     private int currentResolution;
-    private List<ParticleSystem.Particle> points = new List<ParticleSystem.Particle>();
-    private ParticleSystem p;
+    private List<Vector3> points = new List<Vector3>();
+    private LineRenderer r;
 
     void Start() {
 
-        p = GetComponent<ParticleSystem>();
+        r = GetComponent<LineRenderer>();
 
         //CreatePoints();
 
         List<string> objects = new List<string>(DATA.sessions[0].lookData.dictionary.Keys);
 
         List<LookData> data = new List<LookData>();
+        Debug.Log(objects.Count);
         if (objects.Count > 0) {
             string tempObj = objects[0];
+            Debug.Log(tempObj);
 
             foreach (Session s in DATA.sessions) {
                 if (s.lookData.dictionary.ContainsKey(tempObj)) {
                     data.Add(s.lookData.dictionary[tempObj]);
                 }
             }
+            Debug.Log(data.Count);
 
             float[] x = new float[data.Count];
             float[] y = new float[data.Count];
@@ -128,12 +117,19 @@ public class Grapher : MonoBehaviour {
 
         points.Clear();
         for (int i = 0; i < resolution; i++) {
-            points.Add(new ParticleSystem.Particle());
-            Vector3 p = points[i].position;
-            p.x = Mathf.InverseLerp(minX, maxX, x[i]);
-            p.y = Mathf.InverseLerp(minY, maxY, y[i]);
-        }
+            Vector3 newPoint = new Vector3();
+            
+            newPoint.x = Mathf.InverseLerp(minX, maxX, x[i]);
+            newPoint.y = Mathf.InverseLerp(minY, maxY, y[i]);
+            Debug.Log(newPoint);
 
+            points.Add(newPoint);
+        }
+        r.positionCount = points.Count;
+        r.SetPositions(points.ToArray());
+
+        xAxis.text = xLabel;
+        yAxis.text = yLabel;
     }
 
     float Max(float[] list) {
