@@ -13,6 +13,7 @@ public class DataLoader : MonoBehaviour {
 	public Button gamebutton;
 	public GameObject sr;
 	public GameObject buttonprefab;
+	public string game;
 
 	public List<string> objects = new List<string>();
 
@@ -59,7 +60,7 @@ public class DataLoader : MonoBehaviour {
 	}
 
 	public void Clear() {
-		string game = games [dp.value];
+		game = games [dp.value];
 		sr.gameObject.SetActive (true);
 		//add data to it
 

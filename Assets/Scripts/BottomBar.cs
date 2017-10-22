@@ -27,7 +27,7 @@ public class BottomBar : MonoBehaviour {
 		foreach (Session ses in DATA.sessions) {
 			if (ses.gameName == dl.game && ses.lookData.dictionary.ContainsKey(s)) {
 				GameObject a = Instantiate (button, transform);
-				a.GetComponentInChildren<Text> ().text = "c";
+				a.GetComponentInChildren<Text> ().text = ses.sessionID;
 			}
 		}
 	}
