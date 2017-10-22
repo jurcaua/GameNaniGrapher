@@ -142,7 +142,7 @@ public class Grapher : MonoBehaviour {
         r[2].gameObject.SetActive(false);
         legendItems[2].SetActive(false);
 
-        for (int rendIndex = 0; rendIndex < r.Length; rendIndex++) {
+        for (int rendIndex = 0; rendIndex < r.Length - 1; rendIndex++) {
 
             List<Keydata> data = new List<Keydata>();
 
@@ -219,12 +219,15 @@ public class Grapher : MonoBehaviour {
         yMin.text = minY.ToString();
         yMax.text = maxY.ToString();
 
+
+
     }
 
     float Max(float[] list) {
-
+		
         float max = float.MinValue;
         for (int i = 0; i < list.Length; i++) {
+			Debug.Log(list[i]);
             if (list[i] > max) {
                 max = list[i];
             }
@@ -233,6 +236,7 @@ public class Grapher : MonoBehaviour {
     }
 
     float Min(float[] list) {
+		Debug.Log("Min");
 
         float min = float.MaxValue;
         for (int i = 0; i < list.Length; i++) {

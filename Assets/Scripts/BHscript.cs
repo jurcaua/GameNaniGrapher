@@ -15,10 +15,13 @@ public class BHscript : MonoBehaviour {
 
 	public GameObject graph;
 	public GameObject legend;
+	public GameObject swap;
 	// Use this for initialization
 	void Start () {
 		graph = GameObject.Find ("Graph");
 		legend = GameObject.Find ("Legend");
+		swap = GameObject.Find ("Switch");
+
 	}
 	
 	// Update is called once per frame
@@ -29,6 +32,7 @@ public class BHscript : MonoBehaviour {
 
 		graph.SetActive (false);
 		legend.SetActive (false);
+		swap.SetActive (false);
 
 		ldr.gameObject.SetActive (true);
 

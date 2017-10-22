@@ -131,7 +131,7 @@ public class DataLoader : MonoBehaviour {
 			}
 		}
 
-
+		Destroy (swap);
 	}
 }
 
