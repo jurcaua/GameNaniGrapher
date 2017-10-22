@@ -17,23 +17,14 @@ public class Session {
     public string gameName;
     public string dateTime;
 
-    public LookDataManager LookData = new LookDataManager();
-    public KeyDataManager KeyData = new KeyDataManager();
+    public LookDataManager lookData;
+	public KeyDataManager keyData;
 
     public Session(string _gameName, string _dateTime, List<string> lookDataKeys, List<LookData> lookDataValues, List<KeyCode> keyDataKeys, List<Keydata> keyDataValues) {
         gameName = _gameName;
         dateTime = _dateTime;
-        
-        AddLookDataSessions(lookDataKeys, lookDataValues);
-        AddKeyDataSessions(keyDataKeys, keyDataValues);
+       
+		lookData = new LookDataManager (lookDataKeys, lookDataValues);
+		keyData = new KeyDataManager(keyDataKeys, keyDataValues);
     }
-
-    public void AddLookDataSessions(List<string> keys, List<LookData> values) {
-        LookData.AddSession(keys, values);
-    }
-
-    public void AddKeyDataSessions(List<KeyCode> keys, List<Keydata> values) {
-        KeyData.AddSession(keys, values);
-    }
-
 }

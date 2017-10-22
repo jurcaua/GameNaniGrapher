@@ -3,20 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyDataManager {
-
-    public List<KeyDataSession> sessions = new List<KeyDataSession>();
-
-    public void AddSession(List<KeyCode> keys, List<Keydata> values) {
-        Debug.Log(string.Format("Added key session with {0} values", keys.Count));
-        sessions.Add(new KeyDataSession(keys, values));
-    }
-}
-
-public class KeyDataSession {
     
     public Dictionary<KeyCode, Keydata> dictionary = new Dictionary<KeyCode, Keydata>();
 
-    public KeyDataSession(List<KeyCode> keys, List<Keydata> values) {
+    public KeyDataManager(List<KeyCode> keys, List<Keydata> values) {
 
         if (!(keys == null) && !(values == null)) {
             if (keys.Count != values.Count) {

@@ -4,20 +4,9 @@ using UnityEngine;
 
 public class LookDataManager {
 
-    public List<LookDataSession> sessions = new List<LookDataSession>();
+	public Dictionary<string, LookData> dictionary = new Dictionary<string, LookData>();
 
-    public void AddSession(List<string> keys, List<LookData> values) {
-        Debug.Log(string.Format("Added look session with {0} values", keys.Count));
-        sessions.Add(new LookDataSession(keys, values));
-    }
-}
-
-[System.Serializable]
-public class LookDataSession {
-    
-    public Dictionary<string, LookData> dictionary = new Dictionary<string, LookData>();
-
-    public LookDataSession(List<string> keys, List<LookData> values) {
+    public LookDataManager(List<string> keys, List<LookData> values) {
 
         if (!(keys == null) && !(values == null)){
             if (keys.Count != values.Count) {

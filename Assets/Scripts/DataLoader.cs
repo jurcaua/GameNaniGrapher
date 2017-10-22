@@ -2,11 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.UI;
 
 public class DataLoader : MonoBehaviour {
 
     public string folderPath;
-    
+	public List<string> games = new List<string> ();
+
+	public Dropdown dp;
+	public Button gamebutton;
+	public GameObject sr;
+	public GameObject buttonprefab;
+
+	public List<string> objects = new List<string>();
+
     void Awake() {
         folderPath = Application.persistentDataPath + "/../GameNani/GameNani/LoadData/";
         Debug.Log(folderPath);
@@ -25,6 +34,8 @@ public class DataLoader : MonoBehaviour {
             Debug.Log("Directory does not exist!");
             Directory.CreateDirectory(folderPath);
         }
+
+		FillDropDown ();
 	}
 	
 	void OpenFile(string filePath) {
@@ -36,7 +47,41 @@ public class DataLoader : MonoBehaviour {
 
     void ProcessData(PrintableData data) {
         DATA.AddSession(data.gameName, data.dateTime, data.keys, data.lookDatas, data.keyPressData.keycodes, data.keyPressData.keydatas);
-    }
+
+		if (!games.Contains (data.gameName)) {
+			games.Add (data.gameName);
+		}
+	}
+
+	void FillDropDown() {
+		dp.AddOptions (games);
+	}
+
+	public void Clear() {
+		string game = games [dp.value];
+		sr.gameObject.SetActive (true);
+		//add data to it
+
+		Transform content = sr.transform.GetChild (0);
+
+		foreach (Session s in DATA.sessions) {
+			if (s.gameName == game) {
+				foreach (string o in new List<string>(s.lookData.dictionary.Keys)) {
+					if (!objects.Contains(o)) {
+						GameObject b = Instantiate (buttonprefab, content);
+						b.GetComponentInChildren<Text>().text = o;
+						objects.Add (o);
+					}
+				}
+			}
+		}
+		
+
+		dp.gameObject.SetActive (false);
+		gamebutton.gameObject.SetActive (false);
+
+		//loads the next page
+	}
 }
 
 [System.Serializable]
