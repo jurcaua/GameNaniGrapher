@@ -16,11 +16,13 @@ public class DataLoader : MonoBehaviour {
 
 	public GameObject legend;
 	public GameObject graph;
+	public GameObject swap;
 
 	public GameObject buttonprefab;
 	public string game;
 
 	public List<string> objects = new List<string>();
+	public List<KeyCode> kcs = new List<KeyCode>();
 
     void Awake() {
         folderPath = Application.persistentDataPath + "/../GameNani/GameNani/LoadData/";
@@ -92,8 +94,33 @@ public class DataLoader : MonoBehaviour {
 
 		legend.SetActive (true);
 		graph.SetActive (true);
+		swap.SetActive (true);
 
 		//loads the next page
+	}
+
+	public void ClearKey() {
+		sc.transform.GetChild(0).GetComponent<BottomBar> ().key = true;
+		game = games [dp.value];
+
+		for (int i = sr.transform.GetChild(0).childCount - 1; i >= 0; i--) {
+			Destroy (sr.transform.GetChild(0).GetChild(i).gameObject);
+		}
+
+		Transform content = sr.transform.GetChild (0);
+		foreach (Session s in DATA.sessions) {
+			if (s.gameName == game) {
+				foreach (KeyCode kc in new List<KeyCode>(s.keyData.dictionary.Keys)) {
+					if (!kcs.Contains (kc)) {
+						GameObject b = Instantiate (buttonprefab, content.transform);
+						b.GetComponentInChildren<Text>().text = kc.ToString();
+						kcs.Add (kc);
+					}
+				}
+			}
+		}
+
+
 	}
 }
 
