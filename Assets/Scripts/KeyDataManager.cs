@@ -2,25 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class KeyDataManager {
+public class KeyDataManager {
 
-    public static List<KeyDataSession> sessions = new List<KeyDataSession>();
+    public List<KeyDataSession> sessions = new List<KeyDataSession>();
 
-    public static void AddSession(string gameName, string dateTime, List<KeyCode> keys, List<Keydata> values) {
-        Debug.Log(string.Format("Added session: {0} at {1}, with {2} values", gameName, dateTime, keys.Count));
-        sessions.Add(new KeyDataSession(gameName, dateTime, keys, values));
+    public void AddSession(List<KeyCode> keys, List<Keydata> values) {
+        Debug.Log(string.Format("Added key session with {0} values", keys.Count));
+        sessions.Add(new KeyDataSession(keys, values));
     }
 }
 
 public class KeyDataSession {
-
-    public string gameName;
-    public string dateTime;
+    
     public Dictionary<KeyCode, Keydata> dictionary = new Dictionary<KeyCode, Keydata>();
 
-    public KeyDataSession(string _gameName, string _dateTime, List<KeyCode> keys, List<Keydata> values) {
-        gameName = _gameName;
-        dateTime = _dateTime;
+    public KeyDataSession(List<KeyCode> keys, List<Keydata> values) {
 
         if (!(keys == null) && !(values == null)) {
             if (keys.Count != values.Count) {
@@ -34,7 +30,7 @@ public class KeyDataSession {
     }
 
     public override string ToString() {
-        string toReturn = string.Format("Game: {0}, DateTime: {1}\n", gameName, dateTime);
+        string toReturn = "";
         foreach (Keydata data in dictionary.Values) {
             toReturn += data.ToString() + "\n";
         }

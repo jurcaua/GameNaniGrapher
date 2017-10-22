@@ -2,26 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class LookDataManager {
+public class LookDataManager {
 
-    public static List<LookDataSession> sessions = new List<LookDataSession>();
+    public List<LookDataSession> sessions = new List<LookDataSession>();
 
-    public static void AddSession(string gameName, string dateTime, List<string> keys, List<LookData> values) {
-        Debug.Log(string.Format("Added session: {0} at {1}, with {2} values", gameName, dateTime, keys.Count));
-        sessions.Add(new LookDataSession(gameName, dateTime, keys, values));
+    public void AddSession(List<string> keys, List<LookData> values) {
+        Debug.Log(string.Format("Added look session with {0} values", keys.Count));
+        sessions.Add(new LookDataSession(keys, values));
     }
 }
 
 [System.Serializable]
 public class LookDataSession {
-
-    public string gameName;
-    public string dateTime;
+    
     public Dictionary<string, LookData> dictionary = new Dictionary<string, LookData>();
 
-    public LookDataSession(string _gameName, string _dateTime, List<string> keys, List<LookData> values) {
-        gameName = _gameName;
-        dateTime = _dateTime;
+    public LookDataSession(List<string> keys, List<LookData> values) {
 
         if (!(keys == null) && !(values == null)){
             if (keys.Count != values.Count) {

@@ -35,8 +35,7 @@ public class DataLoader : MonoBehaviour {
     }
 
     void ProcessData(PrintableData data) {
-        LookDataManager.AddSession(data.gameName, data.dateTime, data.keys, data.lookDatas);
-        KeyDataManager.AddSession(data.gameName, data.dateTime, data.keyPressData.keycodes, data.keyPressData.keydatas);
+        DATA.AddSession(data.gameName, data.dateTime, data.keys, data.lookDatas, data.keyPressData.keycodes, data.keyPressData.keydatas);
     }
 }
 
